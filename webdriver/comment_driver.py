@@ -35,6 +35,8 @@ class CommentDriver(object):
         now = time.time()
         time.sleep(0.5)
         page_content = trans_pagecontent(self.driver.page_source) 
+        with open(r'E:\Workspaces\html_files\Sinaweibo\webdriver\weibo.html','wb') as f:
+            f.write(self.driver.page_source)
         comment_totalpage = int(re.search(r'\"page\":{\"totalpage\":(\d+),\"pagenum\":\d+},"count":\d+}}',page_content,re.S).group(1))
         print 'comment_totalpage = ',comment_totalpage
         [cid_list,totalcomment] = parse_comments(page_content,0,now,mid)

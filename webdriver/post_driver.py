@@ -36,9 +36,10 @@ class SinaweiboCrawler(object):
         self.driver.get(url)
         time.sleep(5)
         page_content = self.driver.page_source
-#         with open(r'E:\Workspaces\html_files\Sinaweibo\webdriver\weibo.html','wb') as f:
-#             f.write(self.driver.page_source) 
+        with open(r'E:\Workspaces\html_files\Sinaweibo\webdriver\weibo.html','wb') as f:
+            f.write(self.driver.page_source) 
         simple_content = self.pre_process(page_content)
+        
         post_totalpage = len(re.findall(r'<li.*?<a href=.*?>\\u7b2c(\d*)\\u9875<\\/a><\\/li>',simple_content,re.S))
         print 'post_totalpage =',post_totalpage
         [mid_list,totalpost] = parse_posts(page_content,0)
@@ -50,7 +51,7 @@ class SinaweiboCrawler(object):
                 print e
                 print '@@@@@@@@@@@@@@@@@@@@@@@@@@@'
                 pass
-            time.sleep(5)
+            time.sleep(3)
             page_content = self.driver.page_source
             simple_content = self.pre_process(page_content)
             post_totalpage = len(re.findall(r'<li.*?<a href=.*?>\\u7b2c(\d*)\\u9875<\\/a><\\/li>',simple_content,re.S))
@@ -77,8 +78,10 @@ class SinaweiboCrawler(object):
             post_url = url + '&page=' + str(i)
             print post_url
             self.driver.get(post_url)
-            time.sleep(5)
+            time.sleep(3)
             content = self.driver.page_source
+            with open(r'E:\Workspaces\html_files\Sinaweibo\webdriver\weibo.html','wb') as f:
+                f.write(self.driver.page_source) 
             [mid_list,totalpost_1] = parse_posts(content,totalpost_1)
             while mid_list == []:        
                 try:
@@ -88,7 +91,7 @@ class SinaweiboCrawler(object):
                     print e
                     print '@@@@@@@@@@@@@@@@@@@@@@@@@@@'
                     pass
-                time.sleep(5)
+                time.sleep(3)
                 content = self.driver.page_source
                 [mid_list,totalpost_1] = parse_posts(content,totalpost_1)   
             print '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',i
@@ -99,23 +102,30 @@ class SinaweiboCrawler(object):
 
 def main():
     crawler = SinaweiboCrawler()
-    url = 'http://s.weibo.com/weibo/%25E6%259D%258E%25E6%2598%2593%25E5%25B3%25B0%2520%25E5%2590%25B8%25E6%25AF%2592&typeall=1&suball=1&timescope=custom:2016-06-20-0:2016-06-21-0'
-    [post_totalpage,totalpost] = crawler.search(url)
-    crawler.fetcher(post_totalpage, url, totalpost)
+#     url = 'http://s.weibo.com/weibo/%25E9%259B%25B7%25E6%25B4%258B&timescope=custom:2016-05-10-6:2016-05-10-9&nodup=1'
+#     [post_totalpage,totalpost] = crawler.search(url)
+#     crawler.fetcher(post_totalpage, url, totalpost)
 #     crawler.driver.close()
-    crawler.driver.quit()
-#     date_1 = int(sys.argv[1])
-#     date_2 = date_1 + 1
-#     end = int(sys.argv[2])
-#     while(date_2) != (int(end) + 1):
-#         url = 'http://s.weibo.com/weibo/%25E6%259D%258E%25E6%2598%2593%25E5%25B3%25B0%2520%25E5%2590%25B8%25E6%25AF%2592&typeall=1&suball=1&timescope=custom:2016-07-'+str(date_1)+'-0:2016-07-'+str(date_2)+'-0'
-#         print url
-#         [post_totalpage,totalpost] = crawler.search(url)
-#         crawler.fetcher(post_totalpage, url, totalpost)
-#         date_1 += 1
-#         date_2 += 1
-#         print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n'
 #     crawler.driver.quit()
+    
+    date_1 = int(sys.argv[1])
+    date_2 = (date_1 + 1) % 24
+    while(date_1 != 24):
+        print '^^^^^^^^^^^^^ %s ~ %s ^^^^^^^^^'%(date_1,date_2)
+        if date_2 == 0:
+            url = 'http://s.weibo.com/weibo/%25E9%259B%25B7%25E6%25B4%258B&timescope=custom:2016-07-04-' + str(date_1) + ':2016-07-05-' + str(date_2) + '&nodup=1'
+        else:
+            url = 'http://s.weibo.com/weibo/%25E9%259B%25B7%25E6%25B4%258B&timescope=custom:2016-07-04-' + str(date_1) + ':2016-07-04-' + str(date_2) + '&nodup=1'
+        print url
+        [post_totalpage,totalpost] = crawler.search(url)
+        crawler.fetcher(post_totalpage, url, totalpost)
+        date_1 += 1
+        date_2 = (date_2 + 1) % 24
+        print '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n'
+        time.sleep(1)
+        
+    crawler.driver.quit()
+
 
 if __name__ == "__main__":
     main()

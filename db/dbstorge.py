@@ -15,7 +15,7 @@ class DB(object):
     def execute(self,query,params=''):
         try:
             if params != '':
-                print '&&&&&&&&&&&&&&&&&&&&&& insert success &&&&&&&&&&&&&&&&&&&'
+                print 'insert success'
                 return self.cur.execute(query,params)
             else:
                 return self.cur.execute(query)
