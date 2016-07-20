@@ -113,9 +113,9 @@ def main():
     while(date_1 != 24):
         print '^^^^^^^^^^^^^ %s ~ %s ^^^^^^^^^'%(date_1,date_2)
         if date_2 == 0:
-            url = 'http://s.weibo.com/weibo/%25E9%259B%25B7%25E6%25B4%258B&timescope=custom:2016-07-04-' + str(date_1) + ':2016-07-05-' + str(date_2) + '&nodup=1'
+            url = 'http://s.weibo.com/weibo/%25E9%259B%25B7%25E6%25B4%258B&timescope=custom:2016-07-05-' + str(date_1) + ':2016-07-06-' + str(date_2) + '&nodup=1'
         else:
-            url = 'http://s.weibo.com/weibo/%25E9%259B%25B7%25E6%25B4%258B&timescope=custom:2016-07-04-' + str(date_1) + ':2016-07-04-' + str(date_2) + '&nodup=1'
+            url = 'http://s.weibo.com/weibo/%25E9%259B%25B7%25E6%25B4%258B&timescope=custom:2016-07-05-' + str(date_1) + ':2016-07-05-' + str(date_2) + '&nodup=1'
         print url
         [post_totalpage,totalpost] = crawler.search(url)
         crawler.fetcher(post_totalpage, url, totalpost)
